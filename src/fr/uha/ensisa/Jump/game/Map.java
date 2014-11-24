@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -19,12 +20,15 @@ public class Map {
 
 	private int[][] map;
 
-	public void loadMapFile(String filename) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
+	public void loadMapFile(String filename)  {
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+		
 		String line = null;
 		String[] parts = null;
 
-		tileSet = ImageIO.read(new File(reader.readLine()));
+		tileSet = ImageIO.read(new File("resources/img/" + reader.readLine()));
 		parts = reader.readLine().split(" ");
 		this.nbTilesX = Integer.valueOf(parts[0]);
 		this.nbTilesY = Integer.valueOf(parts[1]);
@@ -38,6 +42,10 @@ public class Map {
 			i++;
 
 		}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void draw(Graphics2D g2d) {
@@ -50,7 +58,7 @@ public class Map {
 			for (int j = 0; j < nbTilesX; j++) {
 
 				if (map[i][j] == 1)
-					g2d.drawImage(tileSet, drawpositionX, drawpositionY, null);
+					g2d.drawImage(tileSet, drawpositionX, drawpositionY, tileWidth, tileHeight,null);
 
 				drawpositionX += tileWidth;
 			}

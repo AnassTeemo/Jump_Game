@@ -30,18 +30,18 @@ public class Avatar {
     
     public Avatar()
     {
-    	this.Initialize();
-    	this.LoadContent();
+    	this.initialize();
+    	this.loadContent();
     }
     
-    private void Initialize()
+    private void initialize()
     {
         avatar_image = null;
         x = 300;
         y = 300;
     }
     
-    private void LoadContent()
+    private void loadContent()
     {
     	try {
 			avatar_image = ImageIO.read(new File("resources/img/avatar.png"));
@@ -51,7 +51,7 @@ public class Avatar {
 		}
     }
     
-    public void Draw(Graphics2D g2d)
+    public void draw(Graphics2D g2d)
     {
     	g2d.drawImage(avatar_image, x, y, null);
         System.out.println("Avatar coordinates: " + x + " : " + y);
@@ -60,7 +60,7 @@ public class Avatar {
     /**
      * Here we move the avatar.
      */
-    public void Update()
+    public void update()
     {
         // moving right or left.
         if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT))  x++;
@@ -76,7 +76,7 @@ public class Avatar {
         
         if( this.x > 784 ) this.x = 784;
         if( this.x < 0) this.x = 0;
-        if( this.y > 300) this.y = 300;
+        if( this.y > 322) this.y = 322;
         if( this.y < 0)	this.y = 0;
         
     }

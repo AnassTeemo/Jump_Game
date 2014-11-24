@@ -5,11 +5,11 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.prefs.BackingStoreException;
 
 import javax.imageio.ImageIO;
 
 import fr.uha.ensisa.Jump.game.Avatar;
+import fr.uha.ensisa.Jump.game.Level;
 
 /**
  * Actual game.
@@ -20,7 +20,7 @@ import fr.uha.ensisa.Jump.game.Avatar;
 public class Game {
 
 	BufferedImage background_image;
-	private Avatar avatar;
+	private Level level;
 	
     public Game()
     {
@@ -30,9 +30,9 @@ public class Game {
             @Override
             public void run(){
                 // Sets variables and objects for the game.
-                Initialize();
+                initialize();
                 // Load game files (images, sounds, ...)
-                LoadContent();
+                loadContent();
                 
                 Framework.gameState = Framework.GameState.PLAYING;
             }
@@ -44,15 +44,15 @@ public class Game {
    /**
      * Set variables and objects for the game.
      */
-    private void Initialize()
+    private void initialize()
     {
-    	avatar = new Avatar();
+    	level = new Level();
     }
     
     /**
      * Load game files - images, sounds, ...
      */
-    private void LoadContent()
+    private void loadContent()
     {
     	try {
 			background_image = ImageIO.read(new File("resources/img/Backgound.PNG"));
@@ -66,7 +66,7 @@ public class Game {
     /**
      * Restart game - reset some variables.
      */
-    public void RestartGame()
+    public void restartGame()
     {
         
     }
@@ -78,9 +78,9 @@ public class Game {
      * @param gameTime gameTime of the game.
      * @param mousePosition current mouse position.
      */
-    public void UpdateGame(long gameTime, Point mousePosition)
+    public void updateGame(long gameTime, Point mousePosition)
     {
-        avatar.Update();
+    	level.upDate();
     }
     
     /**
@@ -89,9 +89,9 @@ public class Game {
      * @param g2d Graphics2D
      * @param mousePosition current mouse position.
      */
-    public void Draw(Graphics2D g2d, Point mousePosition)
+    public void draw(Graphics2D g2d, Point mousePosition)
     {
     	g2d.drawImage(background_image, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-    	avatar.Draw(g2d);
+    	level.draw(g2d);
     }
 }
