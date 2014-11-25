@@ -16,17 +16,31 @@ public class Avatar {
 	 /**
 	  * X coordinate of the avatar.
 	  */
-    public int x;
+    public float x;
     
     /**
      * Y coordinate of the avatar.
      */
-    public int y;
+    public float y;
+    
+    private float speedX;
+    private float speedY;
+    
+    private boolean jumping;
+    private boolean jumped;
+    private boolean canJump;
+    private int jumpCount;
+    private int maxJump;
 
+    
     /**
      * image of the Avatar.
      */
-    private BufferedImage avatar_image;;
+    private BufferedImage avatar_image;
+
+
+
+	
     
     public Avatar()
     {
@@ -37,8 +51,15 @@ public class Avatar {
     private void initialize()
     {
         avatar_image = null;
-        x = 300;
-        y = 300;
+        x = 20;
+        y = 322;
+        speedX = 0;
+        speedY = 0;
+        jumping = false;
+        jumped = false;
+        canJump = true;
+        jumpCount = 0;
+        maxJump = 2;
     }
     
     private void loadContent()
@@ -53,7 +74,7 @@ public class Avatar {
     
     public void draw(Graphics2D g2d)
     {
-    	g2d.drawImage(avatar_image, x, y, null);
+    	g2d.drawImage(avatar_image,(int) x,(int)(y), null);
         System.out.println("Avatar coordinates: " + x + " : " + y);
     }
     
@@ -63,20 +84,45 @@ public class Avatar {
     public void update()
     {
         // moving right or left.
-        if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT))  x++;
+        if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT))  speedX = 1.8f;
+        else speedX = 0;
         
-        if(Canvas.keyboardKeyState(KeyEvent.VK_LEFT))	x--;
+        if(Canvas.keyboardKeyState(KeyEvent.VK_LEFT))	speedX = -1.8f;
         
-        if(Canvas.keyboardKeyState(KeyEvent.VK_UP))
-            y = y - 3;
-        else
-            y = y + 2;
+        if(Canvas.keyboardKeyState(KeyEvent.VK_UP)){
+        	if( jumpCount < maxJump && y > 280 && canJump ){
+        		speedY = -5;
+        		jumping = true;
+        		jumped = true;
+        	}
+        	else if( y>230 && canJump && jumpCount == 1){
+        		speedY = -5;
+        		jumping = true;
+        		jumped = true;
+        	}
+        	else{
+        		canJump = false;
+        		//speedY += 0.5f;
+        	}
+        	}
+        else{
+        	if(jumped)
+        		jumpCount++;
+        	jumped = false;
+        	canJump = true;
+        	//speedY += 0.5f;
+        }
+      
+        if(jumping){
+        	speedY += 0.7f;
+        }
         
-      //Checks if the avatar still in the area
+        x+=speedX;
+        y+=speedY;
         
         if( this.x > 784 ) this.x = 784;
         if( this.x < 0) this.x = 0;
-        if( this.y > 322) this.y = 322;
+        if( this.y > 322){ this.y = 322; jumping = false; jumpCount = 0; }
         if( this.y < 0)	this.y = 0;
         
     }
