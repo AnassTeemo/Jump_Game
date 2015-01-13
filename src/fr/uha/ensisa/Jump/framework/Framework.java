@@ -10,11 +10,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/**
- * Framework that controls the game (Game.java) that created it, update it and draw it on the screen.
- * 
- * @author www.gametutorial.net
- */
+
 
 public class Framework extends Canvas {
     
