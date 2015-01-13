@@ -3,11 +3,7 @@ package fr.uha.ensisa.Jump.framework;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-/**
- * Class for animations, e.g. explosion.
- * 
- * @author www.gametutorial.net
- */
+
 
 public class Animation {
 
