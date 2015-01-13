@@ -11,12 +11,6 @@ import javax.imageio.ImageIO;
 import fr.uha.ensisa.Jump.game.Avatar;
 import fr.uha.ensisa.Jump.game.Level;
 
-/**
- * Actual game.
- * 
- * @author www.gametutorial.net
- */
-
 public class Game {
 
 	BufferedImage background_image;
