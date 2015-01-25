@@ -67,5 +67,17 @@ public class Map {
 
 		}
 	}
+	
+	public int[][] getMap() {
+		return map;
+	}
+
+	public int getNbTilesX() {
+		return nbTilesX;
+	}
+
+	public int getNbTilesY() {
+		return nbTilesY;
+	}
 
 }
