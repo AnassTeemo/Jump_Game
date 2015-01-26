@@ -1,6 +1,8 @@
 package fr.uha.ensisa.Jump.game;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -10,7 +12,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import fr.uha.ensisa.Jump.framework.Canvas;
-import fr.uha.ensisa.Jump.framework.Framework;
 
 public class Avatar {
 
@@ -35,10 +36,6 @@ public class Avatar {
      */
     private BufferedImage avatar_image;
 
-
-
-	
-    
     public Avatar()
     {
     	this.initialize();
@@ -48,8 +45,8 @@ public class Avatar {
     private void initialize()
     {
         avatar_image = null;
-        x = 20;
-        y = 322;
+        x = 180;
+        y = 324;
         speedX = 0;
         speedY = 0;
     }
@@ -73,17 +70,49 @@ public class Avatar {
     /**
      * Here we move the avatar.
      */
-    public void updateInput()
+    public void update(Map map)
     {
     	speedX = 0;
     	speedY = 0;
-        // moving right or left.
-        if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT))  speedX = 1.8f;
         
-        if(Canvas.keyboardKeyState(KeyEvent.VK_LEFT))	speedX = -1.8f;
+        if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT)) {
+        	int uptile = map.getrightUptiletype(x, y+3);
+        	int downtile = map.getrightDowntiletype(x, y-2);
+        	
+        	if(uptile != 1 && downtile != 1)
+        		speedX = 1.8f;
+ 	
+        	}
         
-        if(Canvas.keyboardKeyState(KeyEvent.VK_UP))  speedY = -3f;
-        else speedY = 1.8f;
+        if(Canvas.keyboardKeyState(KeyEvent.VK_LEFT)){
+        	int uptile = map.getleftUptiletype(x, y+3);
+        	int downtile = map.getleftDowntiletype(x, y-2);
+
+        	if(uptile != 1 && downtile != 1)
+        		speedX = -1.8f;
+        	
+        	
+        }
+        
+        if(Canvas.keyboardKeyState(KeyEvent.VK_UP))  {
+        	int luptile = map.getleftUptiletype(x+2, y);
+        	int ruptile = map.getrightUptiletype(x-2, y);
+        	
+        	if(luptile != 1 && ruptile != 1)
+        		speedY = -3f;
+        	
+        }
+        else{
+        	int ldowntile = map.getleftDowntiletype(x+2, y);
+        	int rdowntile = map.getrightDowntiletype(x-2, y);
+        	
+        	if(ldowntile != 1 && rdowntile != 1)
+        		speedY = 1.8f;
+        }
+        
+        
+        
+
         
     }
 
@@ -91,15 +120,7 @@ public class Avatar {
 		x += speedX;
 		y += speedY;
         
-        if( this.x > 784 ) this.x = 784;
-        if( this.x < 0) this.x = 0;
-        if( this.y > 322){ this.y = 322; }
-        if( this.y < 0)	this.y = 0;
-		
 	}
 
-	public Rectangle getNextRectangle() {
-		return new Rectangle((int)(x+speedX), (int)(y+speedY), this.WIDTH, this.HEIGHT);
-	}
     
 }

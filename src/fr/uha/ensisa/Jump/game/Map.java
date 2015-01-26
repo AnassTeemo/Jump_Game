@@ -1,12 +1,14 @@
 package fr.uha.ensisa.Jump.game;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -19,6 +21,28 @@ public class Map {
 	private int nbTilesY;
 
 	private int[][] map;
+//		public Point getleftDowntile(float x, float y){
+//		return new Point(((int)(x/nbTilesX))*18, ((int)((y+18)/nbTilesY))*18);
+//	}
+//	public Point getleftUptile(float x, float y){
+//		return new Point(((int)(x/nbTilesX))*18, ((int)(y/nbTilesY))*18);
+//	}
+//	
+	public int getleftUptiletype(float x, float y){
+		return map[(int)(y/18)][(int)(x/18)];
+	}
+	
+	public int getleftDowntiletype(float x, float y){
+		return map[(int)((y+18)/18)][(int)(x/18)];
+	}
+	
+	public int getrightUptiletype(float x, float y){
+		return map[(int)(y/18)][(int)((x+18)/18)];
+	}
+	
+	public int getrightDowntiletype(float x, float y){
+		return map[(int)((y+18)/18)][(int)((x+18)/18)];
+	}
 
 	public void loadMapFile(String filename)  {
 		BufferedReader reader;
