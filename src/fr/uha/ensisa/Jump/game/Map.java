@@ -17,6 +17,7 @@ public class Map {
 	private final int tileWidth = 18;
 	private final int tileHeight = 18;
 	private BufferedImage tileSet;
+	private BufferedImage chouk;
 	private int nbTilesX;
 	private int nbTilesY;
 
@@ -28,20 +29,10 @@ public class Map {
 //		return new Point(((int)(x/nbTilesX))*18, ((int)(y/nbTilesY))*18);
 //	}
 //	
-	public int getleftUptiletype(float x, float y){
-		return map[(int)(y/18)][(int)(x/18)];
-	}
-	
-	public int getleftDowntiletype(float x, float y){
-		return map[(int)((y+18)/18)][(int)(x/18)];
-	}
-	
-	public int getrightUptiletype(float x, float y){
-		return map[(int)(y/18)][(int)((x+18)/18)];
-	}
-	
-	public int getrightDowntiletype(float x, float y){
-		return map[(int)((y+18)/18)][(int)((x+18)/18)];
+
+
+	public Map(String filename) {
+		this.loadMapFile(filename);
 	}
 
 	public void loadMapFile(String filename)  {
@@ -53,6 +44,7 @@ public class Map {
 		String[] parts = null;
 
 		tileSet = ImageIO.read(new File("resources/img/" + reader.readLine()));
+		chouk = ImageIO.read(new File("resources/img/" + reader.readLine()));
 		parts = reader.readLine().split(" ");
 		this.nbTilesX = Integer.valueOf(parts[0]);
 		this.nbTilesY = Integer.valueOf(parts[1]);
@@ -83,6 +75,8 @@ public class Map {
 
 				if (map[i][j] == 1)
 					g2d.drawImage(tileSet, drawpositionX, drawpositionY, tileWidth, tileHeight,null);
+				if (map[i][j] == 2)
+					g2d.drawImage(chouk, drawpositionX, drawpositionY, tileWidth, tileHeight,null);
 
 				drawpositionX += tileWidth;
 			}
@@ -92,6 +86,22 @@ public class Map {
 		}
 	}
 	
+	public int getleftUptiletype(float x, float y){
+		return map[(int)(y/18)][(int)(x/18)];
+	}
+	
+	public int getleftDowntiletype(float x, float y){
+		return map[(int)((y+18)/18)][(int)(x/18)];
+	}
+	
+	public int getrightUptiletype(float x, float y){
+		return map[(int)(y/18)][(int)((x+18)/18)];
+	}
+	
+	public int getrightDowntiletype(float x, float y){
+		return map[(int)((y+18)/18)][(int)((x+18)/18)];
+	}
+		
 	public int[][] getMap() {
 		return map;
 	}
