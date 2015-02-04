@@ -1,11 +1,19 @@
 package fr.uha.ensisa.Jump.game;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+
+import fr.uha.ensisa.Jump.framework.LineIterator;
+
+
 
 public class Cannon {
 	
@@ -14,8 +22,9 @@ public class Cannon {
 	private int x;
 	private int y;	
 	private BufferedImage img_cannon;
-
-	private boolean canShoot;
+	Point2D direcVect;
+	
+	
 	
 	public Cannon(){
 		this.initialize();
@@ -36,22 +45,58 @@ public class Cannon {
 		x = 450;
 		y = 20;
 		missile = new Missile(x, y);
-		canShoot = false;
-		
+		direcVect = null;
 	}
 	
 	public void update(Avatar player,Map map){
-		float a = (player.getY() - this.y)/(player.getX() - this.x);
 		
-		if(canShoot)
-			missile.update(player.getX(),player.getY());
+		if(missile.canbeShoot()){
+			
+		if(playerIsTargetable(player, map))
+			direcVect = new Point2D.Float(player.getX() - this.x, player.getY() - this.y);
 		else
-			missile.update();
+			direcVect = null;
+		
+		missile.shoot(direcVect);
+		missile.setCanbeShoot(false);
+		
+		}
+		
+		missile.update(map);
+		
+		missileKillsPlayer(player,missile);
 		
 	}
-	
+
 	public void draw(Graphics2D g2d){
 		g2d.drawImage(img_cannon, x, y, null);
 		missile.draw(g2d);
 	}
+	
+	public boolean playerIsTargetable(Avatar player,Map map){
+		Line2D line = new Line2D.Float(this.x, this.y, player.getX(), player.getY());
+		Point2D current;
+		for(Iterator<Point2D> iter = new LineIterator(line); iter.hasNext();) {
+			current =iter.next();
+			if(map.getleftUptiletype((float)current.getX(), (float)current.getY()) != 0)
+				return false;
+		}
+		
+		return true;
+	}
+	
+	
+	private void missileKillsPlayer(Avatar player, Missile missile) {
+		Rectangle2D rectPlayer = new Rectangle2D.Float(player.getX(), player.getY(), 18, 18);
+		Rectangle2D rectMissile = new Rectangle2D.Float(missile.getX(), missile.getY(), 9, 9);
+		
+		if(rectPlayer.intersects(rectMissile)){
+			Avatar.isDead = true;
+			missile.setCanbeShoot(true);
+			missile.restartShooting();
+		}
+		
+	}
+
+
 }

@@ -7,6 +7,7 @@ import javax.sound.sampled.Clip;
 public class Sound {
 	
 	public static final Sound gamerunningSound = new Sound("gamerunningSound.wav");
+	public static final Sound playerDeath = new Sound("PlayerDeath.wav");
 
 
 	private Clip clip;
@@ -26,7 +27,20 @@ public class Sound {
 		try {
 			new Thread() {
 				public void run() {
+					clip.setFramePosition(0);
 					clip.start();
+				}
+			}.start();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void playLoop() {
+		try {
+			new Thread() {
+				public void run() {
+					clip.loop(Clip.LOOP_CONTINUOUSLY);
 				}
 			}.start();
 		} catch (Throwable e) {

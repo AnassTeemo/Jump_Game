@@ -75,8 +75,9 @@ public class Game {
     public void updateGame(long gameTime, Point mousePosition)
     {
     	level.upDate();
-    	Sound.gamerunningSound.play();
+    	//Sound.gamerunningSound.play();
     	if(Avatar.isDead){
+    		Sound.playerDeath.play();
     		try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
