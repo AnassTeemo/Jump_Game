@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -14,7 +15,8 @@ import fr.uha.ensisa.Jump.game.Level;
 public class Game {
 
 	BufferedImage background_image;
-	private Level level;
+	private ArrayList<Level> levels;
+	private Level currentLevel;
 	
     public Game()
     {
@@ -40,7 +42,11 @@ public class Game {
      */
     private void initialize()
     {
-    	level = new Level();
+    	levels = new ArrayList<Level>();
+    	levels.add(new Level("resources/map/lvl1.txt"));
+    	levels.add(new Level("resources/map/lvl2.txt"));
+    	currentLevel = levels.get(0);
+    	Statistique.initialize();
     }
     
     /**
@@ -54,6 +60,8 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+
     }    
     
     
@@ -74,18 +82,17 @@ public class Game {
      */
     public void updateGame(long gameTime, Point mousePosition)
     {
-    	level.upDate();
+    	currentLevel.upDate();
+    	Statistique.update(currentLevel,gameTime);
     	//Sound.gamerunningSound.play();
     	if(Avatar.isDead){
     		Sound.playerDeath.play();
-    		try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		level.restart();
+    		try { Thread.sleep(100); } catch (InterruptedException e) {e.printStackTrace();}
+    		currentLevel.restart();
     	}
+    	
+    	if(currentLevel.isCompleted())
+    		currentLevel = levels.get(1);
     	
     }
     
@@ -98,6 +105,7 @@ public class Game {
     public void draw(Graphics2D g2d, Point mousePosition)
     {
     	g2d.drawImage(background_image, 0, 0, Framework.frameWidth, Framework.frameHeight, null);
-    	level.draw(g2d);
+    	currentLevel.draw(g2d);
+    	Statistique.draw(g2d);
     }
 }
