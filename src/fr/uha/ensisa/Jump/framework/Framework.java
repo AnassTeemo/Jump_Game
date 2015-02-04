@@ -1,5 +1,7 @@
 package fr.uha.ensisa.Jump.framework;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -48,7 +50,7 @@ public class Framework extends Canvas {
     /**
      * Possible states of the game
      */
-    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED}
+    public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, COMPLETED, DESTROYED}
     /**
      * Current state of the game
      */
@@ -173,6 +175,10 @@ public class Framework extends Canvas {
                         lastVisualizingTime = System.nanoTime();
                     }
                 break;
+			case COMPLETED:
+				break;
+			case DESTROYED:
+				break;
             }
             
             // Repaint the screen.
@@ -214,6 +220,21 @@ public class Framework extends Canvas {
             case GAME_CONTENT_LOADING:
                 //...
             break;
+		case COMPLETED:
+			Font font = new Font("monospaced", Font.BOLD, 18);
+			g2d.setFont(font);
+	        g2d.setColor(Color.blue);
+			g2d.drawString("Congratulation!!!!", frameWidth/2 - 100, frameHeight/2 - 30);
+			g2d.drawString("Press space key to resart", frameWidth/2 - 100, frameHeight/2 );
+			break;
+		case DESTROYED:
+			break;
+		case STARTING:
+			break;
+		case VISUALIZING:
+			break;
+		default:
+			break;
         }
     }
     
@@ -283,6 +304,25 @@ public class Framework extends Canvas {
         	case MAIN_MENU:
         		if (e.getKeyCode() == KeyEvent.VK_ENTER)	newGame();
         	break;
+		case COMPLETED:
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) restartGame();
+			break;
+		case DESTROYED:
+			break;
+		case GAMEOVER:
+			break;
+		case GAME_CONTENT_LOADING:
+			break;
+		case OPTIONS:
+			break;
+		case PLAYING:
+			break;
+		case STARTING:
+			break;
+		case VISUALIZING:
+			break;
+		default:
+			break;
         }
     }
     

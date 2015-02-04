@@ -11,11 +11,12 @@ import javax.imageio.ImageIO;
 
 import fr.uha.ensisa.Jump.game.Avatar;
 import fr.uha.ensisa.Jump.game.Level;
+import fr.uha.ensisa.Jump.game.Levels;
 
 public class Game {
 
 	BufferedImage background_image;
-	private ArrayList<Level> levels;
+	private Levels levels;
 	private Level currentLevel;
 	
     public Game()
@@ -42,10 +43,8 @@ public class Game {
      */
     private void initialize()
     {
-    	levels = new ArrayList<Level>();
-    	levels.add(new Level("resources/map/lvl1.txt"));
-    	levels.add(new Level("resources/map/lvl2.txt"));
-    	currentLevel = levels.get(0);
+    	levels = new Levels();
+    	currentLevel = levels.NextLevel();
     	Statistique.initialize();
     }
     
@@ -70,7 +69,7 @@ public class Game {
      */
     public void restartGame()
     {
-        
+        this.initialize();
     }
     
     
@@ -92,7 +91,7 @@ public class Game {
     	}
     	
     	if(currentLevel.isCompleted())
-    		currentLevel = levels.get(1);
+    		currentLevel = levels.NextLevel();
     	
     }
     
