@@ -46,6 +46,7 @@ public class Game {
     	levels = new Levels();
     	currentLevel = levels.NextLevel();
     	Statistique.initialize();
+       	Sound.gamerunningSound.playLoop();
     }
     
     /**
@@ -83,7 +84,6 @@ public class Game {
     {
     	currentLevel.upDate();
     	Statistique.update(currentLevel,gameTime);
-    	//Sound.gamerunningSound.play();
     	if(Avatar.isDead){
     		Sound.playerDeath.play();
     		try { Thread.sleep(100); } catch (InterruptedException e) {e.printStackTrace();}
