@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import fr.uha.ensisa.Jump.framework.Animation;
 import fr.uha.ensisa.Jump.framework.Canvas;
 
 public class Avatar {
@@ -20,6 +21,9 @@ public class Avatar {
 	 */
 	private float x;
 
+	String str = "STOPED";
+	String previous = "R";
+
 	/**
 	 * Y coordinate of the avatar.
 	 */
@@ -30,13 +34,21 @@ public class Avatar {
 
 	private boolean canjump;
 	private int jumpcount;
-	
+
 	public static boolean isDead;
 
 	/**
 	 * image of the Avatar.
 	 */
 	private BufferedImage avatar_image;
+	private BufferedImage avatar_image_L;
+	private BufferedImage avatar_image_J_R;
+	private BufferedImage avatar_image_J_L;
+	private BufferedImage annimation_image_right;
+	private BufferedImage annimation_image_left;
+
+	private Animation avatar_annim_R;
+	private Animation avatar_annim_L;
 
 	public Avatar() {
 		this.initialize();
@@ -57,7 +69,18 @@ public class Avatar {
 
 	private void loadContent() {
 		try {
-			avatar_image = ImageIO.read(new File("resources/img/avatar.png"));
+			avatar_image = ImageIO.read(new File("resources/img/avatar_S.png"));
+			avatar_image_L = ImageIO.read(new File("resources/img/avatar_S_L.png"));
+			avatar_image_J_R = ImageIO.read(new File("resources/img/avatar_J_R.png"));
+			avatar_image_J_L = ImageIO.read(new File("resources/img/avatar_J_L.png"));
+			annimation_image_right = ImageIO.read(new File(
+					"resources/img/annimation_image_right.png"));
+			annimation_image_left = ImageIO.read(new File(
+					"resources/img/annimation_image_left.png"));
+			avatar_annim_R = new Animation(annimation_image_right, 18, 18, 30,
+					25, true, (int) x, (int) y, 0);
+			avatar_annim_L = new Animation(annimation_image_left, 18, 18, 30,
+					25, true, (int) x, (int) y, 0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,7 +88,30 @@ public class Avatar {
 	}
 
 	public void draw(Graphics2D g2d) {
-		g2d.drawImage(avatar_image, (int) x, (int) (y), null);
+		switch (str) {
+		case "STOPED":
+			if (previous == "R")
+				g2d.drawImage(avatar_image, (int) x, (int) (y), null);
+			else
+				g2d.drawImage(avatar_image_L, (int) x, (int) (y), null);
+			break;
+		case "RIGHT":
+			avatar_annim_R.Draw(g2d);
+			break;
+		case "LEFT":
+			avatar_annim_L.Draw(g2d);
+			break;
+		case "JUMP":
+			if (previous == "R")
+				g2d.drawImage(avatar_image_J_R, (int) x, (int) (y), null);
+			else
+				g2d.drawImage(avatar_image_J_L, (int) x, (int) (y), null);
+			break;
+		}
+		// if (str == "STOPED")
+		// g2d.drawImage(avatar_image, (int) x, (int) (y), null);
+		// if (str == "RIGHT")
+		// avatar_annim_R.Draw(g2d);
 		// System.out.println("Avatar coordinates: " + x + " : " + y);
 	}
 
@@ -75,28 +121,32 @@ public class Avatar {
 	public void update(Map map) {
 		speedX = 0;
 		// speedY = 0;
-
+		str = "STOPED";
 		if (Canvas.keyboardKeyState(KeyEvent.VK_RIGHT)) {
+			str = "RIGHT";
 			int uptile = map.getrightUptiletype(x, y + 3);
 			int downtile = map.getrightDowntiletype(x, y - 2);
 
 			if (uptile == 0 && downtile == 0)
 				speedX = 1.8f;
-			//TODO 7eyd else
-			else if(uptile == 2 || downtile == 2)
+			// TODO 7eyd else
+			else if (uptile == 2 || downtile == 2)
 				isDead = true;
+			previous = "R";
 
 		}
 
 		if (Canvas.keyboardKeyState(KeyEvent.VK_LEFT)) {
+			str = "LEFT";
 			int uptile = map.getleftUptiletype(x, y + 3);
 			int downtile = map.getleftDowntiletype(x, y - 2);
 
 			if (uptile == 0 && downtile == 0)
 				speedX = -1.8f;
-			//TODO 7eyd else
-			else if(uptile == 2 || downtile == 2)
+			// TODO 7eyd else
+			else if (uptile == 2 || downtile == 2)
 				isDead = true;
+			previous = "L";
 		}
 
 		int ldowntile = map.getleftDowntiletype(x + 2, y);
@@ -106,15 +156,16 @@ public class Avatar {
 			speedY += 0.5f;
 			if (speedY > 2.0f)
 				speedY = 2.0f;
-		} else if (ldowntile == 1 || rdowntile == 1){
+		} else if (ldowntile == 1 || rdowntile == 1) {
 			speedY = 0;
 			jumpcount = 0;
 		}
-		//TODO 7eyd else
-		else if(ldowntile == 2 || rdowntile == 2)
+		// TODO 7eyd else
+		else if (ldowntile == 2 || rdowntile == 2)
 			isDead = true;
 
 		if (Canvas.keyboardKeyState(KeyEvent.VK_UP)) {
+			str = "JUMP";
 
 			if (canjump && jumpcount == 0) {
 				speedY = -6.0f;
@@ -133,8 +184,9 @@ public class Avatar {
 
 		} else {
 			canjump = true;
+
 		}
-		
+
 		int luptile;
 		int ruptile;
 		float i;
@@ -145,13 +197,16 @@ public class Avatar {
 				speedY = i - y;
 				break;
 			}
-			//TODO 7eyd else
+			// TODO 7eyd else
 			else if (luptile == 2 || ruptile == 2) {
 				speedY = i - y;
 				isDead = true;
 				break;
 			}
 		}
+
+		avatar_annim_R.changeCoordinates((int) x, (int) y);
+		avatar_annim_L.changeCoordinates((int) x, (int) y);
 
 	}
 
@@ -176,6 +231,5 @@ public class Avatar {
 	public void setY(float y) {
 		this.y = y;
 	}
-
 
 }
