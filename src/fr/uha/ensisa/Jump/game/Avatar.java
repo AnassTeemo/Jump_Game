@@ -156,7 +156,7 @@ public class Avatar {
 			speedY += 0.5f;
 			if (speedY > 2.0f)
 				speedY = 2.0f;
-		} else if (ldowntile == 1 || rdowntile == 1) {
+		} else if (ldowntile == 1 || rdowntile == 1 || ldowntile == 3 || rdowntile == 3) {
 			speedY = 0;
 			jumpcount = 0;
 		}
@@ -193,7 +193,7 @@ public class Avatar {
 		for (i = y; i > y + speedY; i--) {
 			luptile = map.getleftUptiletype(x + 2, i);
 			ruptile = map.getrightUptiletype(x - 2, i);
-			if (luptile == 1 || ruptile == 1) {
+			if (luptile == 1 || ruptile == 1 || luptile == 3 || ruptile == 3) {
 				speedY = i - y;
 				break;
 			}

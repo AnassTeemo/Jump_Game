@@ -5,10 +5,9 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -86,6 +85,23 @@ public class Map {
 		}
 	}
 	
+	public ArrayList<Point> getMovingSqaures(){
+		ArrayList<Point> tmp = new ArrayList<Point>();
+		for(int i = 0; i < nbTilesY; i++)
+			for(int j = 0; j < nbTilesX; j++)
+				if(map[i][j] == 3)
+					tmp.add(new Point(j, i));
+		return tmp;
+	}
+	
+	public void removeTile(Point p) {
+		map[(int) p.getY()][(int) p.getX()] = 0;
+	}
+	
+	public void initalizeTile(Point p){
+		map[(int) p.getY()][(int) p.getX()] = 3;
+	}
+	
 	public int getleftUptiletype(float x, float y){
 		return map[(int)(y/18)][(int)(x/18)];
 	}
@@ -113,5 +129,7 @@ public class Map {
 	public int getNbTilesY() {
 		return nbTilesY;
 	}
+
+
 
 }

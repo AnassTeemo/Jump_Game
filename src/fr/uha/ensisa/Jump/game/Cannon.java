@@ -43,7 +43,7 @@ public class Cannon {
 
 	private void initialize() {
 		x = 450;
-		y = 20;
+		y = 18;
 		missile = new Missile(x, y);
 		direcVect = null;
 	}

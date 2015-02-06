@@ -82,7 +82,7 @@ public class Game {
      */
     public void updateGame(long gameTime, Point mousePosition)
     {
-    	currentLevel.upDate();
+    	currentLevel.upDate(gameTime);
     	Statistique.update(currentLevel,gameTime);
     	if(Avatar.isDead){
     		Sound.playerDeath.play();
