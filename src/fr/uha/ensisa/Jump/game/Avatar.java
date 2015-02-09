@@ -13,16 +13,20 @@ import fr.uha.ensisa.Jump.framework.Canvas;
 
 public class Avatar {
 
-	private final int WIDTH = 18;
-	private final int HEIGHT = 18;
+	// private final int WIDTH = 18;
+	// private final int HEIGHT = 18;
 
 	/**
 	 * X coordinate of the avatar.
 	 */
 	private float x;
 
-	String str = "STOPED";
-	String previous = "R";
+	private static enum Mouvement_State {
+		STOPED, RIGHT, LEFT, JUMP
+	}
+
+	private Mouvement_State mvState;
+	private String previous_state = "R";
 
 	/**
 	 * Y coordinate of the avatar.
@@ -64,15 +68,19 @@ public class Avatar {
 		jumpcount = 0;
 		canjump = true;
 		isDead = false;
+		mvState = Mouvement_State.STOPED;
 
 	}
 
 	private void loadContent() {
 		try {
 			avatar_image = ImageIO.read(new File("resources/img/avatar_S.png"));
-			avatar_image_L = ImageIO.read(new File("resources/img/avatar_S_L.png"));
-			avatar_image_J_R = ImageIO.read(new File("resources/img/avatar_J_R.png"));
-			avatar_image_J_L = ImageIO.read(new File("resources/img/avatar_J_L.png"));
+			avatar_image_L = ImageIO.read(new File(
+					"resources/img/avatar_S_L.png"));
+			avatar_image_J_R = ImageIO.read(new File(
+					"resources/img/avatar_J_R.png"));
+			avatar_image_J_L = ImageIO.read(new File(
+					"resources/img/avatar_J_L.png"));
 			annimation_image_right = ImageIO.read(new File(
 					"resources/img/annimation_image_right.png"));
 			annimation_image_left = ImageIO.read(new File(
@@ -88,31 +96,40 @@ public class Avatar {
 	}
 
 	public void draw(Graphics2D g2d) {
-		switch (str) {
-		case "STOPED":
-			if (previous == "R")
+		switch (mvState) {
+		case STOPED:
+			if (previous_state == "R")
 				g2d.drawImage(avatar_image, (int) x, (int) (y), null);
 			else
 				g2d.drawImage(avatar_image_L, (int) x, (int) (y), null);
 			break;
-		case "RIGHT":
+		case RIGHT:
+			if (isDead) {
+				Map.setChookBlad(x + 18, y);
+			}
 			avatar_annim_R.Draw(g2d);
 			break;
-		case "LEFT":
+		case LEFT:
+			if (isDead) {
+				Map.setChookBlad(x, y);
+			}
 			avatar_annim_L.Draw(g2d);
 			break;
-		case "JUMP":
-			if (previous == "R")
+		case JUMP:
+			if (isDead) {
+				Map.setChookBlad(x, y);
+			}
+			if (previous_state == "R")
 				g2d.drawImage(avatar_image_J_R, (int) x, (int) (y), null);
 			else
 				g2d.drawImage(avatar_image_J_L, (int) x, (int) (y), null);
 			break;
+
 		}
-		// if (str == "STOPED")
-		// g2d.drawImage(avatar_image, (int) x, (int) (y), null);
-		// if (str == "RIGHT")
-		// avatar_annim_R.Draw(g2d);
-		// System.out.println("Avatar coordinates: " + x + " : " + y);
+		if (isDead) {
+			Map.setChookBlad(x, y + 18);
+		}
+
 	}
 
 	/**
@@ -121,32 +138,43 @@ public class Avatar {
 	public void update(Map map) {
 		speedX = 0;
 		// speedY = 0;
-		str = "STOPED";
+		mvState = Mouvement_State.STOPED;
+
 		if (Canvas.keyboardKeyState(KeyEvent.VK_RIGHT)) {
-			str = "RIGHT";
+			mvState = Mouvement_State.RIGHT;
 			int uptile = map.getrightUptiletype(x, y + 3);
 			int downtile = map.getrightDowntiletype(x, y - 2);
 
 			if (uptile == 0 && downtile == 0)
 				speedX = 1.8f;
 			// TODO 7eyd else
-			else if (uptile == 2 || downtile == 2)
+			else if (uptile == 2 || downtile == 2 || uptile == 3
+					|| downtile == 3 || uptile == 4 || downtile == 4
+					|| uptile == 5 || downtile == 5 || uptile == 6
+					|| downtile == 6 || uptile == 7 || downtile == 7
+					|| uptile == 8 || downtile == 8 || uptile == 9
+					|| downtile == 9)
 				isDead = true;
-			previous = "R";
+			previous_state = "R";
 
 		}
 
 		if (Canvas.keyboardKeyState(KeyEvent.VK_LEFT)) {
-			str = "LEFT";
+			mvState = Mouvement_State.LEFT;
 			int uptile = map.getleftUptiletype(x, y + 3);
 			int downtile = map.getleftDowntiletype(x, y - 2);
 
 			if (uptile == 0 && downtile == 0)
 				speedX = -1.8f;
 			// TODO 7eyd else
-			else if (uptile == 2 || downtile == 2)
+			else if (uptile == 2 || downtile == 2 || uptile == 3
+					|| downtile == 3 || uptile == 4 || downtile == 4
+					|| uptile == 5 || downtile == 5 || uptile == 6
+					|| downtile == 6 || uptile == 7 || downtile == 7
+					|| uptile == 8 || downtile == 8 || uptile == 9
+					|| downtile == 9)
 				isDead = true;
-			previous = "L";
+			previous_state = "L";
 		}
 
 		int ldowntile = map.getleftDowntiletype(x + 2, y);
@@ -156,29 +184,33 @@ public class Avatar {
 			speedY += 0.5f;
 			if (speedY > 2.0f)
 				speedY = 2.0f;
-		} else if (ldowntile == 1 || rdowntile == 1 || ldowntile == 3 || rdowntile == 3) {
+		} else if (ldowntile == 1 || rdowntile == 1 || ldowntile == 10
+				|| rdowntile == 10) {
 			speedY = 0;
 			jumpcount = 0;
 		}
 		// TODO 7eyd else
-		else if (ldowntile == 2 || rdowntile == 2)
+		else if (ldowntile == 2 || rdowntile == 2 || ldowntile == 3
+				|| rdowntile == 3 || ldowntile == 4 || rdowntile == 4
+				|| ldowntile == 5 || rdowntile == 5 || ldowntile == 6
+				|| rdowntile == 6 || ldowntile == 7 || rdowntile == 7
+				|| ldowntile == 8 || rdowntile == 8 || ldowntile == 9
+				|| rdowntile == 9)
 			isDead = true;
 
 		if (Canvas.keyboardKeyState(KeyEvent.VK_UP)) {
-			str = "JUMP";
+			mvState = Mouvement_State.JUMP;
 
 			if (canjump && jumpcount == 0) {
 				speedY = -6.0f;
 				canjump = false;
 				jumpcount++;
-				System.out.println("here1");
 			}
 
 			if (canjump && jumpcount == 1) {
 				speedY = -5.0f;
 				jumpcount++;
 				canjump = false;
-				System.out.println("here2");
 			}
 			canjump = false;
 
@@ -193,12 +225,17 @@ public class Avatar {
 		for (i = y; i > y + speedY; i--) {
 			luptile = map.getleftUptiletype(x + 2, i);
 			ruptile = map.getrightUptiletype(x - 2, i);
-			if (luptile == 1 || ruptile == 1 || luptile == 3 || ruptile == 3) {
+			if (luptile == 1 || ruptile == 1 || luptile == 10 || ruptile == 10) {
 				speedY = i - y;
 				break;
 			}
 			// TODO 7eyd else
-			else if (luptile == 2 || ruptile == 2) {
+			else if (luptile == 2 || ruptile == 2 || luptile == 3
+					|| ruptile == 3 || luptile == 4 || ruptile == 4
+					|| luptile == 5 || ruptile == 5 || luptile == 6
+					|| ruptile == 6 || luptile == 7 || ruptile == 7
+					|| luptile == 8 || ruptile == 8 || luptile == 9
+					|| ruptile == 9) {
 				speedY = i - y;
 				isDead = true;
 				break;

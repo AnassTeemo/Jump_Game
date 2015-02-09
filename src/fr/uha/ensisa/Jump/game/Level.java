@@ -2,6 +2,8 @@ package fr.uha.ensisa.Jump.game;
 
 import java.awt.Graphics2D;
 
+import fr.uha.ensisa.Jump.framework.Sound;
+
 public class Level {
 
 	private Avatar avatar;
@@ -22,6 +24,15 @@ public class Level {
 	}
 
 	public void upDate(long gameTime) {
+		if (Avatar.isDead) {
+			Sound.playerDeath.play();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			this.restart();
+		}
 		avatar.update(map);
 		avatar.move();
 		exitDoor.update(this, avatar);
