@@ -25,9 +25,12 @@ public class Level {
 
 	public void upDate(long gameTime) {
 		if (Avatar.isDead) {
+			avatar.setX(180);
+			avatar.setY(324);
 			Sound.playerDeath.play();
+		
 			try {
-				Thread.sleep(100);
+				Thread.sleep(130);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

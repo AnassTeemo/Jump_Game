@@ -49,9 +49,11 @@ public class Avatar {
 	private BufferedImage avatar_image_J_R;
 	private BufferedImage avatar_image_J_L;
 	private BufferedImage annimation_image_right;
+	private BufferedImage annimation_image_die_right;
 	private BufferedImage annimation_image_left;
 
 	private Animation avatar_annim_R;
+	private Animation avatar_annim_die_R;
 	private Animation avatar_annim_L;
 
 	public Avatar() {
@@ -83,10 +85,14 @@ public class Avatar {
 					"resources/img/avatar_J_L.png"));
 			annimation_image_right = ImageIO.read(new File(
 					"resources/img/annimation_image_right.png"));
+			annimation_image_die_right = ImageIO.read(new File(
+					"resources/img/annimation_die_right.png"));
 			annimation_image_left = ImageIO.read(new File(
 					"resources/img/annimation_image_left.png"));
 			avatar_annim_R = new Animation(annimation_image_right, 18, 18, 30,
 					25, true, (int) x, (int) y, 0);
+			avatar_annim_die_R = new Animation(annimation_image_die_right, 17, 26, 4,
+					130, true, (int) x, (int) y, 0);
 			avatar_annim_L = new Animation(annimation_image_left, 18, 18, 30,
 					25, true, (int) x, (int) y, 0);
 		} catch (IOException e) {
@@ -98,25 +104,39 @@ public class Avatar {
 	public void draw(Graphics2D g2d) {
 		switch (mvState) {
 		case STOPED:
-			if (previous_state == "R")
+			if (previous_state == "R"){
+				if (isDead) {
+					avatar_annim_die_R.Draw(g2d);
+					//Map.setChookBlad(x + 18, y);
+				}
 				g2d.drawImage(avatar_image, (int) x, (int) (y), null);
-			else
+			}
+			else{
+				if (isDead) {
+					avatar_annim_die_R.Draw(g2d);
+					//Map.setChookBlad(x + 18, y);
+				}
 				g2d.drawImage(avatar_image_L, (int) x, (int) (y), null);
+
+			}
 			break;
 		case RIGHT:
 			if (isDead) {
+				avatar_annim_die_R.Draw(g2d);
 				Map.setChookBlad(x + 18, y);
 			}
 			avatar_annim_R.Draw(g2d);
 			break;
 		case LEFT:
 			if (isDead) {
+				avatar_annim_die_R.Draw(g2d);
 				Map.setChookBlad(x, y);
 			}
 			avatar_annim_L.Draw(g2d);
 			break;
 		case JUMP:
 			if (isDead) {
+				avatar_annim_die_R.Draw(g2d);
 				Map.setChookBlad(x, y);
 			}
 			if (previous_state == "R")
@@ -127,9 +147,10 @@ public class Avatar {
 
 		}
 		if (isDead) {
+			avatar_annim_die_R.Draw(g2d);
 			Map.setChookBlad(x, y + 18);
 		}
-
+	
 	}
 
 	/**
@@ -244,6 +265,7 @@ public class Avatar {
 
 		avatar_annim_R.changeCoordinates((int) x, (int) y);
 		avatar_annim_L.changeCoordinates((int) x, (int) y);
+		avatar_annim_die_R.changeCoordinates((int) x, (int) y);
 
 	}
 
