@@ -50,8 +50,7 @@ public class MovingSquare {
 
 	public void loadContent() {
 		try {
-			img_movingSquare = ImageIO.read(new File(
-					"resources/img/movingFloor.png"));
+			img_movingSquare = ImageIO.read(this.getClass().getClassLoader().getResource("img/movingFloor.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

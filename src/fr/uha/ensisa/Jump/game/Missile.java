@@ -32,7 +32,7 @@ public class Missile {
 
 	private void loadContent() {
 		try {
-			img_missile = ImageIO.read(new File("resources/img/missile.png"));
+			img_missile = ImageIO.read(this.getClass().getClassLoader().getResource("img/missile.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

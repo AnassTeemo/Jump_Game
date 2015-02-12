@@ -53,25 +53,25 @@ public class Map {
 			String line = null;
 			String[] parts = null;
 
-			tileSet = ImageIO.read(new File("resources/img/"
+			tileSet = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_down = ImageIO.read(new File("resources/img/"
+			img_chouk_down = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_up = ImageIO.read(new File("resources/img/"
+			img_chouk_up = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_left = ImageIO.read(new File("resources/img/"
+			img_chouk_left = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_right = ImageIO.read(new File("resources/img/"
+			img_chouk_right = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_down_blad = ImageIO.read(new File("resources/img/"
+			img_chouk_down_blad = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_up_blad = ImageIO.read(new File("resources/img/"
+			img_chouk_up_blad = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_left_blad = ImageIO.read(new File("resources/img/"
+			img_chouk_left_blad = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_chouk_right_blad = ImageIO.read(new File("resources/img/"
+			img_chouk_right_blad = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
-			img_door = ImageIO.read(new File("resources/img/"
+			img_door = ImageIO.read(this.getClass().getClassLoader().getResource("img/"
 					+ reader.readLine()));
 			parts = reader.readLine().split(" ");
 			this.nbTilesX = Integer.valueOf(parts[0]);

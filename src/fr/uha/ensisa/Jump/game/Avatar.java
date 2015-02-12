@@ -77,17 +77,12 @@ public class Avatar {
 
 	private void loadContent() {
 		try {
-			avatar_image = ImageIO.read(new File("resources/img/avatar_S.png"));
-			avatar_image_L = ImageIO.read(new File(
-					"resources/img/avatar_S_L.png"));
-			avatar_image_J_R = ImageIO.read(new File(
-					"resources/img/avatar_J_R.png"));
-			avatar_image_J_L = ImageIO.read(new File(
-					"resources/img/avatar_J_L.png"));
-			annimation_image_right = ImageIO.read(new File(
-					"resources/img/annimation_image_right.png"));
-			annimation_image_left = ImageIO.read(new File(
-					"resources/img/annimation_image_left.png"));
+			avatar_image = ImageIO.read(this.getClass().getClassLoader().getResource("img/avatar_S.png"));
+			avatar_image_L = ImageIO.read(this.getClass().getClassLoader().getResource("img/avatar_S_L.png"));
+			avatar_image_J_R = ImageIO.read(this.getClass().getClassLoader().getResource("img/avatar_J_R.png"));
+			avatar_image_J_L = ImageIO.read(this.getClass().getClassLoader().getResource("img/avatar_J_L.png"));
+			annimation_image_right = ImageIO.read(this.getClass().getClassLoader().getResource("img/annimation_image_right.png"));
+			annimation_image_left = ImageIO.read(this.getClass().getClassLoader().getResource("img/annimation_image_left.png"));
 			avatar_annim_R = new Animation(annimation_image_right, 18, 18, 30,
 					25, true, (int) x, (int) y, 0);
 			// avatar_annim_die_R = new Animation(annimation_image_die_right,

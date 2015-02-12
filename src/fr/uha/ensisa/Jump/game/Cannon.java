@@ -32,7 +32,7 @@ public class Cannon {
 
 	private void loadContent() {
 		try {
-			img_cannon = ImageIO.read(new File("resources/img/Cannon.png"));
+			img_cannon = ImageIO.read(this.getClass().getClassLoader().getResource("img/Cannon.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

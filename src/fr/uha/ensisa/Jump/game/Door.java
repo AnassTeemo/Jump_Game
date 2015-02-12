@@ -27,7 +27,7 @@ public class Door {
 
 	public void loadContent(){
 		try {
-			door_img = ImageIO.read(new File("resources/img/door.png"));
+			door_img = ImageIO.read(this.getClass().getClassLoader().getResource("img/door.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

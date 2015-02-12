@@ -12,7 +12,7 @@ public class Levels {
 	private int maxlevel;
 
 	public Levels() {
-		this.levels = (new File("resources/map")).listFiles();
+		this.levels = (new File(this.getClass().getClassLoader().getResource("map").getFile())).listFiles();
 		this.currentlevel = 0;
 		this.maxlevel = this.levels.length;
 	}

@@ -103,7 +103,7 @@ public class Framework extends Canvas {
     private void loadContent()
     {
     	try {
-			menu_image = ImageIO.read(new File("resources/img/menu.PNG"));
+			menu_image = ImageIO.read(this.getClass().getClassLoader().getResource("img/menu.PNG"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

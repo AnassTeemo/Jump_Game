@@ -51,8 +51,7 @@ public class Game {
 	 */
 	private void loadContent() {
 		try {
-			background_image = ImageIO.read(new File(
-					"resources/img/Backgound.PNG"));
+			background_image = ImageIO.read(this.getClass().getClassLoader().getResource("img/Backgound.PNG"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
