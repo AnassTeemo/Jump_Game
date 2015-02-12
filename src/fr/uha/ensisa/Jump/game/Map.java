@@ -24,8 +24,12 @@ public class Map {
 	private BufferedImage img_chouk_down_blad;
 	private BufferedImage img_chouk_left_blad;
 	private BufferedImage img_chouk_right_blad;
+	private BufferedImage img_door;
 	private int nbTilesX;
 	private int nbTilesY;
+	private int canonCorX;
+	private int canonCorY;
+
 
 	private static int[][] map;
 
@@ -67,10 +71,15 @@ public class Map {
 					+ reader.readLine()));
 			img_chouk_right_blad = ImageIO.read(new File("resources/img/"
 					+ reader.readLine()));
+			img_door = ImageIO.read(new File("resources/img/"
+					+ reader.readLine()));
 			parts = reader.readLine().split(" ");
 			this.nbTilesX = Integer.valueOf(parts[0]);
 			this.nbTilesY = Integer.valueOf(parts[1]);
-
+			parts = reader.readLine().split(" ");
+			this.canonCorX = Integer.valueOf(parts[0]);
+			this.canonCorY = Integer.valueOf(parts[1]);
+			
 			map = new int[nbTilesY][nbTilesX];
 			int i = 0;
 			while ((line = reader.readLine()) != null) {
@@ -100,30 +109,33 @@ public class Map {
 				if (map[i][j] == 1)
 					g2d.drawImage(tileSet, drawpositionX, drawpositionY,
 							tileWidth, tileHeight, null);
-				if (map[i][j] == 2)
+				else if (map[i][j] == 2)
 					g2d.drawImage(img_chouk_down, drawpositionX, drawpositionY,
 							tileWidth, tileHeight, null);
-				if (map[i][j] == 3)
+				else if (map[i][j] == 3)
 					g2d.drawImage(img_chouk_up, drawpositionX, drawpositionY,
 							tileWidth, tileHeight, null);
-				if (map[i][j] == 4)
+				else if (map[i][j] == 4)
 					g2d.drawImage(img_chouk_left, drawpositionX, drawpositionY,
 							tileWidth, tileHeight, null);
-				if (map[i][j] == 5)
+				else if (map[i][j] == 5)
 					g2d.drawImage(img_chouk_right, drawpositionX,
 							drawpositionY, tileWidth, tileHeight, null);
-				if (map[i][j] == 6)
+				else if (map[i][j] == 6)
 					g2d.drawImage(img_chouk_down_blad, drawpositionX,
 							drawpositionY, tileWidth, tileHeight, null);
-				if (map[i][j] == 7)
+				else if (map[i][j] == 7)
 					g2d.drawImage(img_chouk_up_blad, drawpositionX,
 							drawpositionY, tileWidth, tileHeight, null);
-				if (map[i][j] == 8)
+				else if (map[i][j] == 8)
 					g2d.drawImage(img_chouk_left_blad, drawpositionX,
 							drawpositionY, tileWidth, tileHeight, null);
-				if (map[i][j] == 9)
+				else if (map[i][j] == 9)
 					g2d.drawImage(img_chouk_right_blad, drawpositionX,
 							drawpositionY, tileWidth, tileHeight, null);
+				else if (map[i][j] == 11)
+					g2d.drawImage(img_door, drawpositionX,
+							drawpositionY-18, 36, 36, null);
 
 				drawpositionX += tileWidth;
 			}
@@ -198,6 +210,10 @@ public class Map {
 
 	public int getNbTilesY() {
 		return nbTilesY;
+	}
+	
+	public Point getCanonCor(){
+		return new Point(this.canonCorX,this.canonCorY);
 	}
 
 }

@@ -43,7 +43,7 @@ public class Game {
 		levels = new Levels();
 		currentLevel = levels.NextLevel();
 		Statistique.initialize();
-		//Sound.gamerunningSound.playLoop();
+		Sound.gamerunningSound.playLoop();
 	}
 
 	/**

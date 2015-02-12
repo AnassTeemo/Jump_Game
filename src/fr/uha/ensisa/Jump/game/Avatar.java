@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -49,12 +50,11 @@ public class Avatar {
 	private BufferedImage avatar_image_J_R;
 	private BufferedImage avatar_image_J_L;
 	private BufferedImage annimation_image_right;
-	private BufferedImage annimation_image_die_right;
 	private BufferedImage annimation_image_left;
 
 	private Animation avatar_annim_R;
-	private Animation avatar_annim_die_R;
 	private Animation avatar_annim_L;
+	private ArrayList<Integer> enmies = new ArrayList<Integer>();
 
 	public Avatar() {
 		this.initialize();
@@ -63,15 +63,16 @@ public class Avatar {
 
 	private void initialize() {
 		avatar_image = null;
-		x = 180;
-		y = 320;
+		x = 22;
+		y = 234;
 		speedX = 0;
 		speedY = 0;
 		jumpcount = 0;
 		canjump = true;
 		isDead = false;
 		mvState = Mouvement_State.STOPED;
-
+		for (int i = 2; i < 10; i++)
+			enmies.add(i);
 	}
 
 	private void loadContent() {
@@ -85,18 +86,16 @@ public class Avatar {
 					"resources/img/avatar_J_L.png"));
 			annimation_image_right = ImageIO.read(new File(
 					"resources/img/annimation_image_right.png"));
-			annimation_image_die_right = ImageIO.read(new File(
-					"resources/img/annimation_die_right.png"));
 			annimation_image_left = ImageIO.read(new File(
 					"resources/img/annimation_image_left.png"));
 			avatar_annim_R = new Animation(annimation_image_right, 18, 18, 30,
 					25, true, (int) x, (int) y, 0);
-			avatar_annim_die_R = new Animation(annimation_image_die_right, 17, 26, 4,
-					130, true, (int) x, (int) y, 0);
+			// avatar_annim_die_R = new Animation(annimation_image_die_right,
+			// 18,
+			// 18, 7, 200, true, (int) x, (int) y, 0);
 			avatar_annim_L = new Animation(annimation_image_left, 18, 18, 30,
 					25, true, (int) x, (int) y, 0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -104,53 +103,41 @@ public class Avatar {
 	public void draw(Graphics2D g2d) {
 		switch (mvState) {
 		case STOPED:
-			if (previous_state == "R"){
-				if (isDead) {
-					avatar_annim_die_R.Draw(g2d);
-					//Map.setChookBlad(x + 18, y);
-				}
-				g2d.drawImage(avatar_image, (int) x, (int) (y), null);
-			}
-			else{
-				if (isDead) {
-					avatar_annim_die_R.Draw(g2d);
-					//Map.setChookBlad(x + 18, y);
-				}
-				g2d.drawImage(avatar_image_L, (int) x, (int) (y), null);
 
-			}
+			if (previous_state == "R")
+				g2d.drawImage(avatar_image, (int) x, (int) (y), null);
+			else
+				g2d.drawImage(avatar_image_L, (int) x, (int) (y), null);
 			break;
 		case RIGHT:
 			if (isDead) {
-				avatar_annim_die_R.Draw(g2d);
+				// avatar_annim_die_R.Draw(g2d);
 				Map.setChookBlad(x + 18, y);
 			}
 			avatar_annim_R.Draw(g2d);
 			break;
 		case LEFT:
 			if (isDead) {
-				avatar_annim_die_R.Draw(g2d);
+				// avatar_annim_die_R.Draw(g2d);
 				Map.setChookBlad(x, y);
 			}
 			avatar_annim_L.Draw(g2d);
 			break;
 		case JUMP:
-			if (isDead) {
-				avatar_annim_die_R.Draw(g2d);
+			if (isDead)
 				Map.setChookBlad(x, y);
-			}
-			if (previous_state == "R")
+			else if (previous_state == "R") {
 				g2d.drawImage(avatar_image_J_R, (int) x, (int) (y), null);
-			else
+
+			} else {
 				g2d.drawImage(avatar_image_J_L, (int) x, (int) (y), null);
+			}
 			break;
 
 		}
-		if (isDead) {
-			avatar_annim_die_R.Draw(g2d);
+		if (isDead)
 			Map.setChookBlad(x, y + 18);
-		}
-	
+
 	}
 
 	/**
@@ -169,12 +156,7 @@ public class Avatar {
 			if (uptile == 0 && downtile == 0)
 				speedX = 1.8f;
 			// TODO 7eyd else
-			else if (uptile == 2 || downtile == 2 || uptile == 3
-					|| downtile == 3 || uptile == 4 || downtile == 4
-					|| uptile == 5 || downtile == 5 || uptile == 6
-					|| downtile == 6 || uptile == 7 || downtile == 7
-					|| uptile == 8 || downtile == 8 || uptile == 9
-					|| downtile == 9)
+			else if (enmies.contains(uptile) || enmies.contains(downtile))
 				isDead = true;
 			previous_state = "R";
 
@@ -188,12 +170,7 @@ public class Avatar {
 			if (uptile == 0 && downtile == 0)
 				speedX = -1.8f;
 			// TODO 7eyd else
-			else if (uptile == 2 || downtile == 2 || uptile == 3
-					|| downtile == 3 || uptile == 4 || downtile == 4
-					|| uptile == 5 || downtile == 5 || uptile == 6
-					|| downtile == 6 || uptile == 7 || downtile == 7
-					|| uptile == 8 || downtile == 8 || uptile == 9
-					|| downtile == 9)
+			else if (enmies.contains(uptile) || enmies.contains(downtile))
 				isDead = true;
 			previous_state = "L";
 		}
@@ -211,12 +188,7 @@ public class Avatar {
 			jumpcount = 0;
 		}
 		// TODO 7eyd else
-		else if (ldowntile == 2 || rdowntile == 2 || ldowntile == 3
-				|| rdowntile == 3 || ldowntile == 4 || rdowntile == 4
-				|| ldowntile == 5 || rdowntile == 5 || ldowntile == 6
-				|| rdowntile == 6 || ldowntile == 7 || rdowntile == 7
-				|| ldowntile == 8 || rdowntile == 8 || ldowntile == 9
-				|| rdowntile == 9)
+		else if (enmies.contains(ldowntile) || enmies.contains(rdowntile))
 			isDead = true;
 
 		if (Canvas.keyboardKeyState(KeyEvent.VK_UP)) {
@@ -251,12 +223,7 @@ public class Avatar {
 				break;
 			}
 			// TODO 7eyd else
-			else if (luptile == 2 || ruptile == 2 || luptile == 3
-					|| ruptile == 3 || luptile == 4 || ruptile == 4
-					|| luptile == 5 || ruptile == 5 || luptile == 6
-					|| ruptile == 6 || luptile == 7 || ruptile == 7
-					|| luptile == 8 || ruptile == 8 || luptile == 9
-					|| ruptile == 9) {
+			else if (enmies.contains(luptile) || enmies.contains(ruptile)) {
 				speedY = i - y;
 				isDead = true;
 				break;
@@ -265,14 +232,13 @@ public class Avatar {
 
 		avatar_annim_R.changeCoordinates((int) x, (int) y);
 		avatar_annim_L.changeCoordinates((int) x, (int) y);
-		avatar_annim_die_R.changeCoordinates((int) x, (int) y);
+		// avatar_annim_die_R.changeCoordinates((int) x, (int) y);
 
 	}
 
 	public void move() {
 		x += speedX;
 		y += speedY;
-
 	}
 
 	public float getX() {
@@ -289,6 +255,13 @@ public class Avatar {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	public void restart() {
+		Avatar.isDead = false;
+		this.setX(22);
+		this.setY(234);
+		
 	}
 
 }

@@ -36,7 +36,7 @@ public class Door {
 	
 	public void update(Level lvl, Avatar player){
 		Rectangle2D rectPlayer = new Rectangle2D.Float(player.getX(), player.getY(), 18, 18);
-		Rectangle2D rectDoor = new Rectangle2D.Float(this.x, this.y, 30, 30);
+		Rectangle2D rectDoor = new Rectangle2D.Float(this.x+10, this.y+10, 10, 10);
 		
 		if(rectPlayer.intersects(rectDoor)){
 			lvl.setCompleted(true);

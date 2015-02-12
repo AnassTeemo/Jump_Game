@@ -18,15 +18,13 @@ public class Level {
 		completed = false;
 		avatar = new Avatar();
 		map = new Map(lvl);
-		cannon = new Cannon();
-		exitDoor = new Door(742, 312);
+		cannon = new Cannon(map.getCanonCor());
+		exitDoor = new Door(756,144);
 		movingSquares = new MovingSquares(map.getMovingSqaures());
 	}
 
 	public void upDate(long gameTime) {
 		if (Avatar.isDead) {
-			avatar.setX(180);
-			avatar.setY(324);
 			Sound.playerDeath.play();
 		
 			try {
@@ -52,9 +50,7 @@ public class Level {
 	}
 
 	public void restart(){
-		Avatar.isDead = false;
-		avatar.setX(180);
-		avatar.setY(324);
+		avatar.restart();
 		movingSquares.initialize(map);
 	}
 
